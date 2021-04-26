@@ -10,10 +10,11 @@ export type KanbanIssueProps = {
   columnIndex: number;
 };
 
-export type DragObject = {
+export type DragIssueObject = {
   type: string;
   index: number;
   columnIndex: number;
+  id: number;
 };
 
 export type CollectedProps = {
@@ -25,8 +26,8 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
   const { move, confirmLastUpdate, cancelLastUpdate } = useKanban();
 
   const [{ isDragging }, dragRef] = useDrag({
-    type: "CARD",
-    item: { type: "CARD", index, columnIndex },
+    type: "ISSUE",
+    item: { type: "ISSUE", index, columnIndex, id: issue.id },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
@@ -37,8 +38,12 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
     },
   });
 
-  const [{ isOver }, dropRef] = useDrop<DragObject, unknown, CollectedProps>({
-    accept: "CARD",
+  const [{ isOver }, dropRef] = useDrop<
+    DragIssueObject,
+    unknown,
+    CollectedProps
+  >({
+    accept: "ISSUE",
     hover(item, monitor) {
       const draggedColumnIndex = item.columnIndex;
       const draggedIndex = item.index;
@@ -47,6 +52,10 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
       const targetIndex = index;
       const targetColumnIndex = columnIndex;
       const targetSize = ref.current?.getBoundingClientRect();
+
+      if (item.id === issue.id) {
+        return;
+      }
 
       if (
         targetIndex === draggedIndex &&
