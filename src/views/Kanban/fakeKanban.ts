@@ -9,7 +9,7 @@ export const fakeKanban: KanbanColumn[] = [
     issues: [
       {
         id: uuidv4(),
-        title: "Create VIZ platform",
+        title: "Backlog 1",
         status: "A",
         userCreator: "Natã Souza Santos",
         userResponsible: "Natã Souza Santos",
@@ -17,7 +17,7 @@ export const fakeKanban: KanbanColumn[] = [
       },
       {
         id: uuidv4(),
-        title: "Create VIZ platform 2",
+        title: "Backlog 2",
         status: "A",
         userCreator: "Natã Souza Santos",
         userResponsible: "Natã Souza Santos",
@@ -32,7 +32,7 @@ export const fakeKanban: KanbanColumn[] = [
     issues: [
       {
         id: uuidv4(),
-        title: "Create VIZ platform",
+        title: "To Do 1",
         status: "A",
         userCreator: "Natã Souza Santos",
         userResponsible: "Natã Souza Santos",
@@ -40,7 +40,7 @@ export const fakeKanban: KanbanColumn[] = [
       },
       {
         id: uuidv4(),
-        title: "Create VIZ platform 2",
+        title: "To Do 2",
         status: "A",
         userCreator: "Natã Souza Santos",
         userResponsible: "Natã Souza Santos",

@@ -17,28 +17,27 @@ export type DragObject = {
 };
 
 export type CollectedProps = {
-  isDragging: boolean;
+  isOver: boolean;
 };
 
 function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const { move, confirmUpdate, cancelUpdate } = useKanban();
+  const { move, confirmLastUpdate, cancelLastUpdate } = useKanban();
 
   const [{ isDragging }, dragRef] = useDrag({
+    type: "CARD",
     item: { type: "CARD", index, columnIndex },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
-    type: "CARD",
     end(item, monitor) {
       if (!monitor.didDrop()) {
-        cancelUpdate();
+        cancelLastUpdate();
       }
-      // console.log("Drag end!", );
     },
   });
 
-  const [, dropRef] = useDrop<DragObject, unknown, unknown>({
+  const [{ isOver }, dropRef] = useDrop<DragObject, unknown, CollectedProps>({
     accept: "CARD",
     hover(item, monitor) {
       const draggedColumnIndex = item.columnIndex;
@@ -88,8 +87,11 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
       item.index = targetIndex;
       item.columnIndex = targetColumnIndex;
     },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
     drop() {
-      confirmUpdate();
+      confirmLastUpdate();
     },
   });
 
@@ -97,7 +99,7 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
 
   return (
     <div ref={ref}>
-      <Card isDragging={isDragging} header={<p>{issue.title}</p>} />
+      <Card isDragging={isDragging || isOver} header={<p>{issue.title}</p>} />
     </div>
   );
 }

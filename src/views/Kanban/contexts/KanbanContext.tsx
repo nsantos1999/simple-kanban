@@ -15,8 +15,8 @@ type IKanbanContext = {
     from: number,
     to: number
   ) => void;
-  confirmUpdate: () => void;
-  cancelUpdate: () => void;
+  confirmLastUpdate: () => void;
+  cancelLastUpdate: () => void;
 };
 
 const KanbanContext = createContext({} as IKanbanContext);
@@ -43,12 +43,12 @@ function KanbanProvider({ children }: KanbanProviderProps) {
     [kanbanColumnsPreview, setKanbanColumnsPreview]
   );
 
-  const confirmUpdate = useCallback(() => {
+  const confirmLastUpdate = useCallback(() => {
     console.log("Last Update confirmed!");
     setKanbanColumns(kanbanColumnsPreview);
   }, [kanbanColumnsPreview]);
 
-  const cancelUpdate = useCallback(() => {
+  const cancelLastUpdate = useCallback(() => {
     console.log("Last Update canceled!");
     setKanbanColumnsPreview(kanbanColumns);
   }, [kanbanColumns, setKanbanColumnsPreview]);
@@ -58,8 +58,8 @@ function KanbanProvider({ children }: KanbanProviderProps) {
       value={{
         kanbanColumns: kanbanColumnsPreview,
         move,
-        confirmUpdate,
-        cancelUpdate,
+        confirmLastUpdate,
+        cancelLastUpdate,
       }}
     >
       {children}
