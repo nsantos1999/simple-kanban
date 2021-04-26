@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 
 export type ContainerProps = {
   isDragging?: boolean;
+  backgroundColor?: string;
 };
 
 export const Container = styled.div<ContainerProps>`
@@ -9,8 +10,9 @@ export const Container = styled.div<ContainerProps>`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  border-radius: 10px;
-  box-shadow: 0px 0px 12px -3px rgba(112, 112, 112, 1);
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px -3px rgba(112, 112, 112, 1);
+  background-color: ${({ backgroundColor = "#fff" }) => backgroundColor};
   ${({ isDragging }) =>
     isDragging &&
     css`
@@ -22,7 +24,7 @@ export const Container = styled.div<ContainerProps>`
       * {
         opacity: 0;
       }
-    `}
+    `};
 `;
 
 export const CardContent = styled.div`

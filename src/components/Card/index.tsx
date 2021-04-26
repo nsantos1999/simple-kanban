@@ -6,9 +6,15 @@ export interface CardProps extends Partial<ContainerProps> {
   footer?: React.ReactNode;
 }
 
-function Card({ header, content, footer, isDragging }: CardProps) {
+function Card({
+  header,
+  content,
+  footer,
+  isDragging,
+  backgroundColor = "#FFF",
+}: CardProps) {
   return (
-    <Container isDragging={isDragging}>
+    <Container isDragging={isDragging} backgroundColor={backgroundColor}>
       {header && <CardContent>{header}</CardContent>}
       {content && <CardContent>{content}</CardContent>}
       {footer && <CardContent>{footer}</CardContent>}

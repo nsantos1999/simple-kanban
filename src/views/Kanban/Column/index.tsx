@@ -1,7 +1,7 @@
 import { Card } from "../../../components/Card";
 import { KanbanColumn } from "../../../types/kanban";
 import { Issue } from "../Issue";
-import { IssueContent } from "./styles";
+import { Container, IssueContent } from "./styles";
 
 export type KanbanColumnProps = {
   column: KanbanColumn;
@@ -11,18 +11,21 @@ export type KanbanColumnProps = {
 function Column({ column, index: columnIndex }: KanbanColumnProps) {
   // console.log(columnIndex);
   return (
-    <Card
-      header={<h3>{column.title}</h3>}
-      content={
-        <>
-          {column.issues.map((issue, index) => (
-            <IssueContent key={issue.id}>
-              <Issue issue={issue} index={index} columnIndex={columnIndex} />
-            </IssueContent>
-          ))}
-        </>
-      }
-    />
+    <Container>
+      <Card
+        header={<h3>{column.title}</h3>}
+        content={
+          <>
+            {column.issues.map((issue, index) => (
+              <IssueContent key={issue.id}>
+                <Issue issue={issue} index={index} columnIndex={columnIndex} />
+              </IssueContent>
+            ))}
+          </>
+        }
+        backgroundColor={"#EBECF0"}
+      />
+    </Container>
   );
 }
 
