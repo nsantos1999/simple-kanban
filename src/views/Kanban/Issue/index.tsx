@@ -22,7 +22,7 @@ export type CollectedProps = {
 
 function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const { move } = useKanban();
+  const { move, confirmUpdate, cancelUpdate } = useKanban();
 
   const [{ isDragging }, dragRef] = useDrag({
     item: { type: "CARD", index, columnIndex },
@@ -30,6 +30,12 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
       isDragging: monitor.isDragging(),
     }),
     type: "CARD",
+    end(item, monitor) {
+      if (!monitor.didDrop()) {
+        cancelUpdate();
+      }
+      // console.log("Drag end!", );
+    },
   });
 
   const [, dropRef] = useDrop<DragObject, unknown, unknown>({
@@ -81,6 +87,9 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
 
       item.index = targetIndex;
       item.columnIndex = targetColumnIndex;
+    },
+    drop() {
+      confirmUpdate();
     },
   });
 

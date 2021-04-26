@@ -15,17 +15,22 @@ type IKanbanContext = {
     from: number,
     to: number
   ) => void;
+  confirmUpdate: () => void;
+  cancelUpdate: () => void;
 };
 
 const KanbanContext = createContext({} as IKanbanContext);
 
 function KanbanProvider({ children }: KanbanProviderProps) {
   const [kanbanColumns, setKanbanColumns] = useState(fakeKanban);
+  const [kanbanColumnsPreview, setKanbanColumnsPreview] = useState(
+    kanbanColumns
+  );
 
   const move = useCallback(
     (fromColumn: number, toColumn: number, from: number, to: number) => {
-      setKanbanColumns(
-        produce(kanbanColumns, (draft) => {
+      setKanbanColumnsPreview(
+        produce(kanbanColumnsPreview, (draft) => {
           const issueDragged = draft[fromColumn].issues[from];
 
           draft[fromColumn].issues.splice(from, 1);
@@ -35,11 +40,28 @@ function KanbanProvider({ children }: KanbanProviderProps) {
 
       // console.log(fromColumn, from, to);
     },
-    [kanbanColumns, setKanbanColumns]
+    [kanbanColumnsPreview, setKanbanColumnsPreview]
   );
 
+  const confirmUpdate = useCallback(() => {
+    console.log("Last Update confirmed!");
+    setKanbanColumns(kanbanColumnsPreview);
+  }, [kanbanColumnsPreview]);
+
+  const cancelUpdate = useCallback(() => {
+    console.log("Last Update canceled!");
+    setKanbanColumnsPreview(kanbanColumns);
+  }, [kanbanColumns, setKanbanColumnsPreview]);
+
   return (
-    <KanbanContext.Provider value={{ kanbanColumns, move }}>
+    <KanbanContext.Provider
+      value={{
+        kanbanColumns: kanbanColumnsPreview,
+        move,
+        confirmUpdate,
+        cancelUpdate,
+      }}
+    >
       {children}
     </KanbanContext.Provider>
   );
