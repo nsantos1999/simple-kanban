@@ -1,8 +1,10 @@
 import styled, { css } from "styled-components";
+import { motion } from "framer-motion";
 
 export type ContainerProps = {
   isDragging?: boolean;
   backgroundColor?: string;
+  isClickable?: boolean;
 };
 
 export const Container = styled.div<ContainerProps>`
@@ -13,6 +15,15 @@ export const Container = styled.div<ContainerProps>`
   border-radius: 5px;
   box-shadow: 0px 0px 5px -3px rgba(112, 112, 112, 1);
   background-color: ${({ backgroundColor = "#fff" }) => backgroundColor};
+  ${({ isClickable }) =>
+    isClickable &&
+    css`
+      cursor: pointer;
+      transition: 0.3s;
+      &:hover {
+        box-shadow: 0px 0px 10px -3px rgba(112, 112, 112, 1);
+      }
+    `}
   ${({ isDragging }) =>
     isDragging &&
     css`

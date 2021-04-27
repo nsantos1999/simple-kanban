@@ -53,6 +53,10 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
       const targetColumnIndex = columnIndex;
       const targetSize = ref.current?.getBoundingClientRect();
 
+      if (!targetSize || !draggedOffset) {
+        return;
+      }
+
       if (item.id === issue.id) {
         return;
       }
@@ -61,14 +65,6 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
         targetIndex === draggedIndex &&
         targetColumnIndex === draggedColumnIndex
       ) {
-        return;
-      }
-
-      if (!targetSize) {
-        return;
-      }
-
-      if (!draggedOffset) {
         return;
       }
 

@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useState } from "react";
 import { KanbanColumn } from "../../../types/kanban";
 import { fakeKanban } from "../fakeKanban";
 import produce from "immer";
+import { v4 as uuidv4 } from "uuid";
 
 type KanbanProviderProps = {
   children: React.ReactNode;
@@ -17,6 +18,7 @@ type IKanbanContext = {
   ) => void;
   confirmLastUpdate: () => void;
   cancelLastUpdate: () => void;
+  addNewColumn: () => void;
 };
 
 const KanbanContext = createContext({} as IKanbanContext);
@@ -44,14 +46,26 @@ function KanbanProvider({ children }: KanbanProviderProps) {
   );
 
   const confirmLastUpdate = useCallback(() => {
-    console.log("Last Update confirmed!");
     setKanbanColumns(kanbanColumnsPreview);
   }, [kanbanColumnsPreview]);
 
   const cancelLastUpdate = useCallback(() => {
-    console.log("Last Update canceled!");
     setKanbanColumnsPreview(kanbanColumns);
   }, [kanbanColumns, setKanbanColumnsPreview]);
+
+  const addNewColumn = useCallback(() => {
+    setKanbanColumnsPreview([
+      ...kanbanColumns,
+      {
+        id: uuidv4(),
+        title: "New Column",
+        issues: [],
+        createdAt: new Date(),
+      },
+    ]);
+
+    confirmLastUpdate();
+  }, [setKanbanColumnsPreview, confirmLastUpdate, kanbanColumns]);
 
   return (
     <KanbanContext.Provider
@@ -60,6 +74,7 @@ function KanbanProvider({ children }: KanbanProviderProps) {
         move,
         confirmLastUpdate,
         cancelLastUpdate,
+        addNewColumn,
       }}
     >
       {children}

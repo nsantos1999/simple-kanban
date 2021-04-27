@@ -1,6 +1,6 @@
+import { AddNewColumn } from "./AddNewColumn";
 import { Column } from "./Column";
 import { useKanban } from "./contexts/KanbanContext";
-import { fakeKanban } from "./fakeKanban";
 import { Container } from "./styles";
 
 function Kanban() {
@@ -11,6 +11,7 @@ function Kanban() {
       {kanbanColumns.map((column, index) => (
         <Column column={column} index={index} key={column.id} />
       ))}
+      <AddNewColumn />
     </Container>
   );
 }
