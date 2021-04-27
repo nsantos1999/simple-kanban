@@ -1,3 +1,8 @@
+import { motion } from "framer-motion";
+import {
+  columnAnimation,
+  containerAnimation,
+} from "../../animations/kanbanAnimations";
 import { AddNewColumn } from "./AddNewColumn";
 import { Column } from "./Column";
 import { useKanban } from "./contexts/KanbanContext";
@@ -7,9 +12,11 @@ function Kanban() {
   const { kanbanColumns } = useKanban();
 
   return (
-    <Container>
+    <Container variants={containerAnimation} initial="hidden" animate="visible">
       {kanbanColumns.map((column, index) => (
-        <Column column={column} index={index} key={column.id} />
+        <motion.div variants={columnAnimation} style={{ display: "flex" }}>
+          <Column column={column} index={index} key={column.id} />
+        </motion.div>
       ))}
       <AddNewColumn />
     </Container>
