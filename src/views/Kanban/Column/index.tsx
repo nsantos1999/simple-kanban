@@ -116,7 +116,7 @@ function Column({ column, index: columnIndex }: KanbanColumnProps) {
     },
   });
 
-  dragRef(dropColumnRef(ref));
+  dragRef(dropColumnRef(dropIssueRef(ref)));
 
   return (
     <Container ref={ref}>
