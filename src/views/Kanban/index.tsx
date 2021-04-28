@@ -14,8 +14,12 @@ function Kanban() {
   return (
     <Container variants={containerAnimation} initial="hidden" animate="visible">
       {kanbanColumns.map((column, index) => (
-        <motion.div variants={columnAnimation} style={{ display: "flex" }}>
-          <Column column={column} index={index} key={column.id} />
+        <motion.div
+          variants={columnAnimation}
+          style={{ display: "flex" }}
+          key={column.id}
+        >
+          <Column column={column} index={index} />
         </motion.div>
       ))}
       <AddNewColumn />

@@ -27,11 +27,12 @@ export const Container = styled.div<ContainerProps>`
   ${({ isDragging }) =>
     isDragging &&
     css`
-      border: 2px dashed rgba(0, 0, 0, 0.2);
+      /* border: 2px dashed rgba(0, 0, 0, 0.2); */
       /* border-radius: 0; */
       background-color: transparent;
       box-shadow: none;
       cursor: grabbing;
+      transform: rotate(3deg);
       * {
         opacity: 0;
       }

@@ -16,6 +16,7 @@ type IKanbanContext = {
     from: number,
     to: number
   ) => void;
+  moveColumn: (fromColumn: number, toColumn: number) => void;
   confirmLastUpdate: () => void;
   cancelLastUpdate: () => void;
   addNewColumn: () => void;
@@ -41,6 +42,20 @@ function KanbanProvider({ children }: KanbanProviderProps) {
       );
 
       // console.log(fromColumn, from, to);
+    },
+    [kanbanColumnsPreview, setKanbanColumnsPreview]
+  );
+
+  const moveColumn = useCallback(
+    (fromColumn: number, toColumn: number) => {
+      const produceResult = produce(kanbanColumnsPreview, (draft) => {
+        const columnDragged = draft[fromColumn];
+
+        draft.splice(fromColumn, 1);
+        draft.splice(toColumn, 0, columnDragged);
+      });
+      console.log(produceResult);
+      setKanbanColumnsPreview(produceResult);
     },
     [kanbanColumnsPreview, setKanbanColumnsPreview]
   );
@@ -72,6 +87,7 @@ function KanbanProvider({ children }: KanbanProviderProps) {
       value={{
         kanbanColumns: kanbanColumnsPreview,
         move,
+        moveColumn,
         confirmLastUpdate,
         cancelLastUpdate,
         addNewColumn,

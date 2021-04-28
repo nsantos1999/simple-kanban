@@ -15,7 +15,7 @@ export const columnAnimation: Variants = {
     scale: 1,
     transition: {
       delayChildren: 0.3,
-      staggerChildren: 0.15,
+      staggerChildren: 0.2,
     },
   },
 };

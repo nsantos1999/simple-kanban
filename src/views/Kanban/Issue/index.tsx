@@ -17,10 +17,6 @@ export type DragIssueObject = {
   id: number;
 };
 
-export type CollectedProps = {
-  isOver: boolean;
-};
-
 function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
   const ref = useRef<HTMLDivElement>(null);
   const { move, confirmLastUpdate, cancelLastUpdate } = useKanban();
@@ -31,6 +27,9 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
+    isDragging(monitor) {
+      return issue.id === monitor.getItem().id;
+    },
     end(item, monitor) {
       if (!monitor.didDrop()) {
         cancelLastUpdate();
@@ -38,11 +37,7 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
     },
   });
 
-  const [{ isOver }, dropRef] = useDrop<
-    DragIssueObject,
-    unknown,
-    CollectedProps
-  >({
+  const [, dropRef] = useDrop<DragIssueObject, unknown, unknown>({
     accept: "ISSUE",
     hover(item, monitor) {
       const draggedColumnIndex = item.columnIndex;
@@ -68,33 +63,34 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
         return;
       }
 
-      const targetCenter = (targetSize.bottom - targetSize.top) / 2;
-      const draggedTop = draggedOffset.y - targetSize.top;
+      // const targetCenter = (targetSize.bottom - targetSize.top) / 2;
+      // const draggedTop = draggedOffset.y - targetSize.top;
 
-      if (
-        draggedIndex < targetIndex &&
-        draggedTop < targetCenter &&
-        draggedColumnIndex === targetColumnIndex
-      ) {
-        return;
-      }
+      // if (
+      //   draggedIndex < targetIndex &&
+      //   draggedTop < targetCenter &&
+      //   draggedColumnIndex === targetColumnIndex
+      // ) {
+      //   return;
+      // }
 
-      if (
-        draggedIndex > targetIndex &&
-        draggedTop > targetCenter &&
-        draggedColumnIndex === targetColumnIndex
-      ) {
-        return;
-      }
+      // if (
+      //   draggedIndex > targetIndex &&
+      //   draggedTop > targetCenter &&
+      //   draggedColumnIndex === targetColumnIndex
+      // ) {
+      //   return;
+      // }
 
       move(draggedColumnIndex, targetColumnIndex, draggedIndex, targetIndex);
 
+      console.log(
+        "Moved!",
+        `Column ${draggedColumnIndex} -> ${targetColumnIndex}; Issue ${draggedIndex} -> ${targetIndex}`
+      );
       item.index = targetIndex;
       item.columnIndex = targetColumnIndex;
     },
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-    }),
     drop() {
       confirmLastUpdate();
     },
@@ -104,7 +100,7 @@ function Issue({ issue, index, columnIndex }: KanbanIssueProps) {
 
   return (
     <div ref={ref}>
-      <Card isDragging={isDragging || isOver} header={<p>{issue.title}</p>} />
+      <Card isDragging={isDragging} header={<p>{issue.title}</p>} />
     </div>
   );
 }
